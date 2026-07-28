@@ -1,110 +1,105 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="assets/img/favicon.ico">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>MAC RoboMaster — Applications Closed</title>
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300,700' rel='stylesheet' type='text/css'>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #1a1a1a;
-            background-image: url('assets/img/background.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.62);
-            z-index: 0;
-        }
-
-        .card {
-            position: relative;
-            z-index: 1;
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(8px);
-            border-radius: 12px;
-            padding: 56px 48px 48px;
-            max-width: 520px;
-            width: 90%;
-            animation: fadeInUp 0.7s ease both;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        .icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            color: #ffffff;
-            font-size: 1.9rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            margin-bottom: 16px;
-        }
-
-        p {
-            color: rgba(255, 255, 255, 0.72);
-            font-size: 1rem;
-            font-weight: 300;
-            line-height: 1.7;
-            margin-bottom: 36px;
-        }
-
-        .btn-back {
-            display: inline-block;
-            background-color: #e84545;
-            color: #fff;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            text-decoration: none;
-            padding: 13px 36px;
-            border-radius: 30px;
-            transition: background 0.2s ease, transform 0.15s ease;
-        }
-
-        .btn-back:hover {
-            background-color: #c73535;
-            transform: translateY(-2px);
-        }
-    </style>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="MAC RoboMaster application status."><title>Applications Closed — MAC RoboMaster</title><link rel="icon" href="assets/img/favicon.ico"><link rel="stylesheet" href="assets/css/modern-site.css">
+  <style>
+    .reminder-dialog {
+      width: min(calc(100% - 32px), 560px);
+      padding: 0;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 26px;
+      color: #fff;
+      background: #15191f;
+      box-shadow: 0 30px 90px rgba(0,0,0,.55);
+    }
+    .reminder-dialog::backdrop {
+      background: rgba(5,7,10,.78);
+      backdrop-filter: blur(7px);
+    }
+    .reminder-inner { padding: clamp(28px,6vw,48px); }
+    .dialog-top { display: flex; align-items: start; justify-content: space-between; gap: 24px; }
+    .dialog-top h2 { margin: 0; font-size: clamp(1.8rem,5vw,2.7rem); letter-spacing: -.045em; line-height: 1.05; }
+    .dialog-close {
+      flex: 0 0 auto;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 50%;
+      color: #fff;
+      background: transparent;
+      cursor: pointer;
+    }
+    .dialog-copy { margin: 16px 0 28px; color: #a7adb6; }
+    .field-label { display: block; margin-bottom: 8px; font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .email-field {
+      width: 100%;
+      height: 54px;
+      padding: 0 16px;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 12px;
+      color: #fff;
+      background: rgba(255,255,255,.06);
+      font: inherit;
+    }
+    .email-field:focus { border-color: #ff5260; outline: 2px solid rgba(255,82,96,.25); }
+    .consent { display: grid; margin: 18px 0 24px; grid-template-columns: 20px 1fr; gap: 11px; align-items: start; color: #a7adb6; font-size: .82rem; }
+    .consent input { width: 18px; height: 18px; margin: 3px 0 0; accent-color: #dc2f3d; }
+    .reminder-form .button { width: 100%; }
+    .privacy-note { margin: 15px 0 0; color: #737b86; font-size: .72rem; text-align: center; }
+    .form-success { display: none; padding: 14px 0 2px; }
+    .form-success.visible { display: block; }
+    .form-success h3 { margin: 0 0 8px; font-size: 1.5rem; }
+    .form-success p { margin: 0; color: #a7adb6; }
+  </style>
 </head>
-
 <body>
-    <div class="card">
-        <div class="icon">🤖</div>
-        <h1>Applications Closed</h1>
-        <p>Sorry! We will take in new applicants next September when the new season starts. Check back then — we'd love to have you on the team!</p>
-        <a href="index.html" class="btn-back">Back to Home</a>
-    </div>
-</body>
+  <header class="site-header"><nav class="nav container"><a class="brand" href="index.html"><img src="assets/img/logo.png" alt=""><span>MAC RoboMaster</span></a><a class="button ghost" href="index.html">Back home</a></nav></header>
+  <main class="status-page"><section class="status-card reveal"><div class="status-icon" aria-hidden="true">◆</div><p class="eyebrow">Recruitment update</p><h1 class="section-title">Applications are currently closed.</h1><p>Our next intake is planned for September, when the new season begins. Check back then—we would love to have you on the team.</p><div class="hero-actions"><button class="button" id="open-reminder" type="button">Notify me when applications open</button><a class="button ghost" href="index.html">Back to homepage</a><a class="button ghost" href="mailto:macrobomaster@gmail.com">Stay in touch</a></div></section></main>
 
-</html>
+  <dialog class="reminder-dialog" id="reminder-dialog" aria-labelledby="reminder-title">
+    <div class="reminder-inner">
+      <div class="dialog-top">
+        <h2 id="reminder-title">Get a recruitment reminder.</h2>
+        <button class="dialog-close" id="close-reminder" type="button" aria-label="Close reminder form">✕</button>
+      </div>
+      <p class="dialog-copy">Enter your email and we’ll let you know when applications for the next season open.</p>
+      <form class="reminder-form" id="reminder-form" action="https://docs.google.com/forms/d/e/1FAIpQLSfXucgw3Soedi48jcD6bPNlSe8b-vtJ2shaUVoSWfBplrM-9w/formResponse" method="post" target="reminder-response">
+        <label class="field-label" for="reminder-email">Email address</label>
+        <input class="email-field" id="reminder-email" name="entry.217571228" type="email" autocomplete="email" placeholder="you@example.com" required>
+        <label class="consent"><input name="entry.844746433" type="checkbox" value="I Agree" required><span>I agree to receive recruitment updates from MAC RoboMaster. I can unsubscribe at any time.</span></label>
+        <button class="button" type="submit">Send me a reminder</button>
+        <p class="privacy-note">Your response is stored privately in Google Forms and used only for recruitment updates.</p>
+      </form>
+      <div class="form-success" id="form-success" role="status">
+        <h3>You’re on the reminder list.</h3>
+        <p>Thanks for your interest in MAC RoboMaster. We’ll contact you when applications open.</p>
+      </div>
+      <iframe name="reminder-response" title="Reminder submission response" hidden></iframe>
+    </div>
+  </dialog>
+  <script src="assets/js/modern-site.js"></script>
+  <script>
+    const reminderDialog = document.querySelector("#reminder-dialog");
+    const reminderForm = document.querySelector("#reminder-form");
+    const reminderFrame = document.querySelector('[name="reminder-response"]');
+    let reminderSubmitted = false;
+
+    document.querySelector("#open-reminder").addEventListener("click", () => {
+      reminderDialog.showModal();
+      document.querySelector("#reminder-email").focus();
+    });
+    document.querySelector("#close-reminder").addEventListener("click", () => reminderDialog.close());
+    reminderDialog.addEventListener("click", (event) => {
+      if (event.target === reminderDialog) reminderDialog.close();
+    });
+    reminderDialog.addEventListener("cancel", () => reminderDialog.close());
+    reminderForm.addEventListener("submit", () => {
+      reminderSubmitted = true;
+      reminderForm.querySelector('button[type="submit"]').textContent = "Submitting…";
+    });
+    reminderFrame.addEventListener("load", () => {
+      if (!reminderSubmitted) return;
+      reminderForm.hidden = true;
+      document.querySelector("#form-success").classList.add("visible");
+    });
+  </script>
+</body></html>

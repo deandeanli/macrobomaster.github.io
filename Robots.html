@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Explore the current and previous generations of robots built by MAC RoboMaster.">
+  <title>Robots — MAC RoboMaster</title>
+  <link rel="icon" href="assets/img/favicon.ico">
+  <link rel="stylesheet" href="assets/css/modern-site.css">
+  <style>
+    .fleet-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 22px;
+    }
+    .fleet-card {
+      position: relative;
+      grid-column: span 6;
+      min-height: 570px;
+      overflow: hidden;
+      border-radius: var(--radius);
+      color: #fff;
+      background: var(--soft);
+      box-shadow: 0 14px 45px rgba(0,0,0,.14);
+    }
+    .fleet-card.compact {
+      grid-column: span 4;
+      min-height: 520px;
+    }
+    .fleet-card::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      opacity: .18;
+      background-image: radial-gradient(circle,rgba(255,255,255,.55) 1px,transparent 1px);
+      background-size: 25px 25px;
+    }
+    .fleet-copy {
+      position: relative;
+      z-index: 2;
+      min-height: 220px;
+      padding: 32px;
+      background: linear-gradient(180deg,rgba(19,23,28,1),rgba(19,23,28,.93) 70%,transparent);
+    }
+    .fleet-copy span {
+      color: var(--red-light);
+      font-size: .72rem;
+      font-weight: 850;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .fleet-copy h3 {
+      margin: 7px 0 10px;
+      font-size: clamp(1.8rem,3vw,2.8rem);
+      letter-spacing: -.045em;
+      line-height: 1;
+    }
+    .fleet-copy p {
+      max-width: 48ch;
+      margin: 0;
+      color: rgba(255,255,255,.78);
+      font-size: .92rem;
+    }
+    .fleet-card img {
+      position: absolute;
+      width: 82%;
+      max-height: 68%;
+      right: 2%;
+      bottom: 0;
+      object-fit: contain;
+      transition: transform .4s ease;
+    }
+    .fleet-card:hover img { transform: translateY(-7px) scale(1.025); }
+    .fleet-card.fleet-card--hero img { right: -7%; }
+    .fleet-card.sentry img { right: -10%; }
+    .fleet-card.standard img {
+      width: 82%;
+      max-height: 72%;
+      right: 1%;
+      bottom: 1%;
+    }
+    .fleet-card.omni img { width: 82%; right: -1%; bottom: 2%; }
+    .fleet-card.engineer img { width: 88%; right: -5%; }
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 20px;
+    }
+    .archive-card {
+      overflow: hidden;
+      border: 1px solid rgba(11,13,16,.1);
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 9px 30px rgba(0,0,0,.05);
+    }
+    .archive-image {
+      display: grid;
+      min-height: 330px;
+      place-items: center;
+      overflow: hidden;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 75% 20%,rgba(220,47,61,.1),transparent 32%),
+        #171b21;
+    }
+    .archive-image img {
+      width: 92%;
+      max-height: 290px;
+      object-fit: contain;
+      filter: drop-shadow(0 14px 18px rgba(0,0,0,.3));
+      transition: transform .35s ease;
+    }
+    .archive-card:hover img { transform: scale(1.035); }
+    .archive-copy { padding: 23px; }
+    .archive-copy span { color: var(--red); font-size: .7rem; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
+    .archive-copy h3 { margin: 7px 0 5px; font-size: 1.3rem; letter-spacing: -.03em; }
+    .archive-copy p { margin: 0; color: var(--muted-dark); font-size: .85rem; }
+    @media(max-width:900px) {
+      .fleet-card,
+      .fleet-card.compact { grid-column: span 12; }
+      .archive-grid { grid-template-columns: repeat(2,1fr); }
+    }
+    @media(max-width:640px) {
+      .fleet-card { min-height: 520px; }
+      .fleet-copy { min-height: 230px; padding: 26px; }
+      .archive-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="brand" href="index.html"><img src="assets/img/logo.png" alt=""><span>MAC RoboMaster</span></a>
+      <button class="menu-button" id="menu-button" aria-expanded="false" aria-controls="nav-links" aria-label="Open navigation"><span></span></button>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html">About</a><a class="active" href="Robots.html">Robots</a><a href="Team.html">Team</a><a href="Sponsor.html">Sponsors</a><a href="Contact.html">Contact</a><a class="button" href="apply.html">Join the team ↗</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">Designed · Built · Tested</p>
+        <h1 class="title">Every robot tells part of our story.</h1>
+        <p class="lede">Explore the current competition fleet and the previous generations that taught us how to build what comes next.</p>
+        <div class="hero-actions"><a class="button" href="#current">Current fleet ↓</a><a class="button ghost" href="#archive">Previous robots</a></div>
+      </div>
+    </section>
+
+    <section class="section" id="current">
+      <div class="container">
+        <div class="section-head reveal"><div><p class="eyebrow">Current fleet</p><h2 class="section-title">2026–2027 robots.</h2></div><p class="lede">Four specialized platforms working together across offense, defense, mobility, and resource support.</p></div>
+        <div class="fleet-grid">
+          <article class="fleet-card fleet-card--hero reveal"><div class="fleet-copy"><span>Heavy offense</span><h3>Hero</h3><p>The fleet’s heavy offensive platform, built to deliver powerful, deliberate shots while staying mobile in the arena.</p></div><img src="assets/img/projects/26_hero.svg" alt="MAC RoboMaster 2026 Hero robot"></article>
+          <article class="fleet-card sentry reveal"><div class="fleet-copy"><span>Autonomous defense</span><h3>Sentry</h3><p>An autonomous defensive platform that observes the battlefield, identifies targets, and protects key areas of the arena.</p></div><img src="assets/img/projects/26_sentry.svg" alt="MAC RoboMaster 2026 Sentry robot"></article>
+          <article class="fleet-card compact standard reveal"><div class="fleet-copy"><span>Agility</span><h3>Standard 3</h3><p>A versatile frontline robot designed for fast movement, responsive control, and consistent pressure throughout a match.</p></div><img src="assets/img/projects/26_standard.svg" alt="MAC RoboMaster 2026 Standard 3 robot"></article>
+          <article class="fleet-card compact omni reveal"><div class="fleet-copy"><span>Omnidirectional mobility</span><h3>Standard 4 Omni</h3><p>An omnidirectional Standard platform developed for precise movement, rapid repositioning, and adaptable frontline play.</p></div><img src="assets/img/projects/standard4_omni.svg" alt="MAC RoboMaster 2026 Standard 4 Omni robot"></article>
+          <article class="fleet-card compact engineer reveal"><div class="fleet-copy"><span>Support & recovery</span><h3>Engineer</h3><p>The Engineer collects ore and exchanges it for currency that allied robots can use to purchase ammunition or revive instantly.</p></div><img src="assets/img/projects/engineer_bot_25.svg" alt="MAC RoboMaster Engineer robot"></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section soft" id="archive">
+      <div class="container">
+        <div class="section-head reveal"><div><p class="eyebrow">Robot archive</p><h2 class="section-title">Previous generations.</h2></div><p class="lede">Earlier platforms and concepts that contributed to the team’s mechanical, electrical, control, and autonomy experience.</p></div>
+        <div class="archive-grid">
+          <article class="archive-card reveal"><div class="archive-image"><img src="assets/img/projects/26_neo_standard.svg" alt="2026 Neo Standard robot"></div><div class="archive-copy"><span>2026 generation</span><h3>Neo Standard</h3><p>A newer Standard platform carrying the team’s mobility development forward.</p></div></article>
+          <article class="archive-card reveal"><div class="archive-image"><img src="assets/img/projects/25_hero.svg" alt="2025 Hero robot"></div><div class="archive-copy"><span>2025 generation</span><h3>Hero</h3><p>The heavy offensive platform developed for the team’s 2025 fleet.</p></div></article>
+          <article class="archive-card reveal"><div class="archive-image"><img src="assets/img/projects/24_neo_standard_swerve.svg" alt="2024 Neo Standard Swerve robot"></div><div class="archive-copy"><span>2024 generation</span><h3>Neo Standard Swerve</h3><p>The next iteration of the team’s swerve-drive Standard platform.</p></div></article>
+          <article class="archive-card reveal"><div class="archive-image"><img src="assets/img/projects/24_sentry.svg" alt="2024 Sentry robot"></div><div class="archive-copy"><span>2024 generation</span><h3>Sentry</h3><p>An autonomous defensive platform from the team’s 2024 fleet.</p></div></article>
+          <article class="archive-card reveal"><div class="archive-image"><img src="assets/img/projects/24_BipedStandard.svg" alt="2024 Biped Standard robot"></div><div class="archive-copy"><span>2024 generation</span><h3>Biped Standard</h3><p>A two-legged Standard platform exploring a different approach to arena mobility.</p></div></article>
+          <article class="archive-card reveal"><div class="archive-image"><img src="assets/img/projects/23_neo_standard_swerve.svg" alt="2023 Neo Standard Swerve robot"></div><div class="archive-copy"><span>2023 generation</span><h3>Neo Standard Swerve</h3><p>An experimental Standard platform developed around a swerve-drive chassis.</p></div></article>
+          <article class="archive-card reveal"><div class="archive-image"><img src="assets/img/projects/23_sentry.svg" alt="2023 Sentry robot"></div><div class="archive-copy"><span>2023 generation</span><h3>Sentry</h3><p>An autonomous defensive platform from the team’s 2023 fleet.</p></div></article>
+          <article class="archive-card reveal"><div class="archive-image"><img src="assets/img/projects/23_standard.svg" alt="2023 Standard robot"></div><div class="archive-copy"><span>2023 generation</span><h3>Standard</h3><p>A frontline competition platform from the team’s 2023 fleet.</p></div></article>
+          <article class="archive-card reveal"><div class="archive-image"><img src="assets/img/projects/23_engineer.svg" alt="2023 Engineer robot"></div><div class="archive-copy"><span>2023 generation</span><h3>Engineer</h3><p>A resource and recovery platform developed for allied robot support.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark"><div class="container split"><div><p class="eyebrow">Build the next generation</p><h2 class="section-title">There is always another robot to improve.</h2><p class="lede">Join the team and help carry lessons from every generation into the next arena.</p></div><div><a class="button" href="apply.html">Join MAC RoboMaster ↗</a></div></div></section>
+  </main>
+
+  <footer><div class="container"><div class="footer-top"><div><a class="brand" href="index.html"><img src="assets/img/logo.png" alt=""><span>MAC RoboMaster</span></a><p class="footer-note">McMaster University's student-led RoboMaster team in Hamilton, Ontario.</p></div><div class="footer-group"><strong>Explore</strong><a href="Team.html">Our team</a><a href="Sponsor.html">Sponsors</a><a href="Contact.html">Contact</a><a href="apply.html">Join the team</a></div><div class="footer-group"><strong>Follow</strong><a href="https://instagram.com/macrobomaster">Instagram ↗</a><a href="https://www.linkedin.com/company/mac-robomaster">LinkedIn ↗</a><a href="https://www.youtube.com/channel/UCUXVhB4hOqwW6mYe6Jd7yig">YouTube ↗</a></div></div><div class="footer-bottom"><span>© <span data-year>2026</span> MAC RoboMaster</span><span>McMaster University · Hamilton, Ontario</span></div></div></footer>
+  <script src="assets/js/modern-site.js"></script>
+</body>
+</html>

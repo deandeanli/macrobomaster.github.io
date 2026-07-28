@@ -1,902 +1,918 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="assets/img/favicon.ico">
-    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MAC RoboMaster — McMaster University's student robotics team building competition robots for RoboMaster.">
+  <meta name="theme-color" content="#0b0d10">
+  <title>MAC RoboMaster — Build Beyond</title>
+  <link rel="icon" href="assets/img/favicon.ico">
+  <style>
+    :root {
+      --ink: #0b0d10;
+      --ink-soft: #13171c;
+      --panel: #191e25;
+      --paper: #f4f2ed;
+      --white: #fff;
+      --muted: #a7adb6;
+      --muted-dark: #5f6670;
+      --red: #dc2f3d;
+      --red-light: #ff5260;
+      --gold: #f2b134;
+      --line: rgba(255, 255, 255, .12);
+      --radius: 24px;
+      --shadow: 0 30px 80px rgba(0, 0, 0, .28);
+      --max: 1180px;
+    }
 
-    <title>MAC RoboMaster</title>
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-    <meta name="viewport" content="width=device-width" />
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    body.menu-open { overflow: hidden; }
+    img, video { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { font: inherit; }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
 
-    <!-- Bootstrap core CSS     -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="assets/css/paper-kit.css?v=2.1.0" rel="stylesheet" />
+    .container {
+      width: min(calc(100% - 40px), var(--max));
+      margin-inline: auto;
+    }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 16px;
+      color: var(--red);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 2px;
+      background: currentColor;
+    }
+    .display {
+      margin: 0;
+      font-size: clamp(2.5rem, 6vw, 5.7rem);
+      font-weight: 850;
+      letter-spacing: -.055em;
+      line-height: .98;
+    }
+    .section-title {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(2.2rem, 4.4vw, 4.3rem);
+      font-weight: 820;
+      letter-spacing: -.05em;
+      line-height: 1.02;
+    }
+    .lede {
+      max-width: 630px;
+      margin: 24px 0 0;
+      color: var(--muted-dark);
+      font-size: clamp(1rem, 1.5vw, 1.18rem);
+    }
+    .button {
+      display: inline-flex;
+      min-height: 52px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 22px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: var(--red);
+      color: var(--white);
+      font-size: .86rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+    .button:hover { transform: translateY(-2px); background: var(--red-light); }
+    .button--ghost { border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.05); }
+    .button--ghost:hover { border-color: rgba(255,255,255,.55); background: rgba(255,255,255,.12); }
 
-    <!--  CSS for Demo Purpose, don't include it in your project     -->
-    <link href="assets/css/style.css" rel="stylesheet" />
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 100;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: var(--white);
+      transform: translateY(-150%);
+    }
+    .skip-link:focus { transform: translateY(0); }
 
-    <!--     Fonts and icons     -->
-    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,300,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="assets/fontawesome-free-6.4.0-web/css/all.min.css">
-    <link href="assets/css/nucleo-icons.css" rel="stylesheet" />
+    .site-header {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 30;
+      border-bottom: 1px solid transparent;
+      color: var(--white);
+      transition: background .25s ease, border-color .25s ease;
+    }
+    .site-header.scrolled {
+      border-color: var(--line);
+      background: rgba(11, 13, 16, .88);
+      backdrop-filter: blur(18px);
+    }
+    .nav {
+      display: flex;
+      height: 78px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand { display: inline-flex; align-items: center; gap: 11px; font-weight: 800; }
+    .brand img { width: 42px; height: 42px; object-fit: contain; }
+    .brand span { letter-spacing: -.02em; }
+    .nav-links { display: flex; align-items: center; gap: 30px; }
+    .nav-links > a:not(.button) {
+      color: rgba(255,255,255,.74);
+      font-size: .87rem;
+      font-weight: 700;
+      transition: color .2s ease;
+    }
+    .nav-links > a:not(.button):hover { color: var(--white); }
+    .menu-button {
+      display: none;
+      width: 46px;
+      height: 46px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: white;
+      background: rgba(255,255,255,.06);
+      cursor: pointer;
+    }
+    .menu-button span,
+    .menu-button span::before,
+    .menu-button span::after {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: currentColor;
+      content: "";
+      transition: transform .2s ease;
+    }
+    .menu-button span::before { transform: translateY(-6px); }
+    .menu-button span::after { transform: translateY(4px); }
 
-    <!-- Smooth Scroll -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    .hero {
+      position: relative;
+      min-height: 860px;
+      height: 100svh;
+      overflow: hidden;
+      color: var(--white);
+      background: var(--ink);
+    }
+    .hero video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: .6;
+    }
+    .hero::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+      background:
+        linear-gradient(90deg, rgba(6,8,11,.94) 0%, rgba(6,8,11,.58) 48%, rgba(6,8,11,.18) 80%),
+        linear-gradient(0deg, var(--ink) 0%, transparent 35%);
+    }
+    .hero-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      height: 100%;
+      padding-top: 150px;
+      padding-bottom: 68px;
+      align-content: center;
+      grid-template-columns: minmax(0, 780px) 1fr;
+    }
+    .hero .eyebrow { color: var(--red-light); }
+    .hero .display { max-width: 800px; }
+    .hero-copy {
+      max-width: 620px;
+      margin: 26px 0 32px;
+      color: rgba(255,255,255,.72);
+      font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hero-meta {
+      position: absolute;
+      right: 0;
+      bottom: 74px;
+      display: flex;
+      gap: 38px;
+    }
+    .hero-meta div { padding-left: 14px; border-left: 1px solid rgba(255,255,255,.3); }
+    .hero-meta strong { display: block; font-size: 1.15rem; }
+    .hero-meta span { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .11em; }
+
+    .intro { padding: 130px 0; }
+    .intro-layout {
+      display: grid;
+      align-items: start;
+      grid-template-columns: .85fr 1.15fr;
+      gap: clamp(50px, 8vw, 120px);
+    }
+    .intro-mark {
+      position: sticky;
+      top: 120px;
+      min-height: 440px;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 78% 20%, rgba(220,47,61,.14), transparent 34%),
+        #fff;
+      box-shadow: var(--shadow);
+    }
+    .intro-mark::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      opacity: .12;
+      background-image:
+        linear-gradient(rgba(11,13,16,.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(11,13,16,.18) 1px, transparent 1px);
+      background-size: 44px 44px;
+    }
+    .intro-mark img {
+      position: absolute;
+      width: 68%;
+      right: 5%;
+      bottom: 2%;
+      mix-blend-mode: multiply;
+      filter: drop-shadow(0 18px 18px rgba(0,0,0,.12));
+    }
+    .intro-mark-label {
+      position: absolute;
+      top: 34px;
+      left: 34px;
+      z-index: 1;
+      color: var(--ink);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    .intro-copy .section-title { font-size: clamp(2.5rem, 4.5vw, 4.8rem); }
+    .intro-copy .lede { font-size: 1.12rem; }
+    .intro-facts {
+      display: grid;
+      margin-top: 50px;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid rgba(11,13,16,.16);
+    }
+    .intro-facts div { padding-top: 24px; }
+    .intro-facts strong { display: block; font-size: clamp(1.5rem, 3vw, 2.5rem); letter-spacing: -.04em; }
+    .intro-facts span { color: var(--muted-dark); font-size: .8rem; }
+
+    .disciplines { padding: 120px 0; color: var(--white); background: var(--ink); }
+    .disciplines .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 50px;
+    }
+    .disciplines .lede { color: var(--muted); }
+    .discipline-grid {
+      display: grid;
+      margin-top: 70px;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+    .discipline {
+      position: relative;
+      min-height: 350px;
+      padding: 34px 28px;
+      overflow: hidden;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      transition: background .25s ease;
+    }
+    .discipline:hover { background: var(--panel); }
+    .discipline .number { color: var(--red-light); font-size: .76rem; font-weight: 800; letter-spacing: .13em; }
+    .discipline h3 { margin: 132px 0 14px; font-size: 1.4rem; letter-spacing: -.03em; }
+    .discipline p { margin: 0; color: var(--muted); font-size: .92rem; }
+    .discipline::after {
+      position: absolute;
+      top: 34px;
+      right: 28px;
+      width: 10px;
+      height: 10px;
+      border: 2px solid rgba(255,255,255,.32);
+      border-radius: 50%;
+      content: "";
+    }
+
+    .robots { padding: 130px 0; }
+    .robots-head { display: flex; align-items: end; justify-content: space-between; gap: 30px; }
+    .text-link {
+      padding-bottom: 6px;
+      border-bottom: 1px solid currentColor;
+      color: var(--red);
+      font-size: .85rem;
+      font-weight: 800;
+    }
+    .robot-grid {
+      display: grid;
+      margin-top: 60px;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 22px;
+    }
+    .robot-card {
+      position: relative;
+      min-height: 520px;
+      overflow: hidden;
+      border-radius: var(--radius);
+      color: var(--white);
+      background: var(--ink-soft);
+    }
+    .robot-card.large { grid-column: span 6; }
+    .robot-card.compact {
+      grid-column: span 4;
+      min-height: 560px;
+    }
+    .robot-card::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      opacity: .22;
+      background-image: radial-gradient(circle, rgba(255,255,255,.5) 1px, transparent 1px);
+      background-size: 25px 25px;
+    }
+    .robot-card img {
+      position: absolute;
+      width: 86%;
+      max-height: 76%;
+      right: -2%;
+      bottom: 5%;
+      object-fit: contain;
+      transition: transform .45s cubic-bezier(.2,.7,.2,1);
+    }
+    .robot-card:hover img { transform: scale(1.04) translateY(-8px); }
+    .robot-card-copy { position: relative; z-index: 2; padding: 34px; }
+    .robot-card-copy span { color: var(--red-light); font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    .robot-card-copy h3 { margin: 8px 0 0; font-size: clamp(1.65rem, 3vw, 2.6rem); letter-spacing: -.045em; }
+    .robot-card-copy p {
+      max-width: 34ch;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: .88rem;
+      line-height: 1.55;
+    }
+    .robot-card.has-description {
+      min-height: 520px;
+    }
+    .robot-card.compact.has-description {
+      min-height: 520px;
+    }
+    .robot-card.large.has-description {
+      min-height: 570px;
+    }
+    .robot-card.has-description .robot-card-copy {
+      min-height: 220px;
+      background: linear-gradient(
+        180deg,
+        rgba(19,23,28,1) 0%,
+        rgba(19,23,28,.96) 68%,
+        rgba(19,23,28,0) 100%
+      );
+    }
+    .robot-card.has-description .robot-card-copy p {
+      color: rgba(255,255,255,.88);
+      font-size: .94rem;
+      line-height: 1.6;
+      text-shadow: 0 1px 8px rgba(0,0,0,.6);
+    }
+    .robot-card.has-description img {
+      max-height: 68%;
+      bottom: 1%;
+    }
+    .robot-card.large.has-description img {
+      width: 82%;
+      max-height: 68%;
+      bottom: 0;
+    }
+    .robot-card.hero img {
+      right: -7%;
+    }
+    .robot-card.sentry img {
+      right: -10%;
+    }
+    .robot-card.standard-3 img {
+      width: 84%;
+      max-height: 72%;
+      right: 1%;
+      bottom: 1%;
+    }
+    .robot-card.omni img {
+      width: 84%;
+      right: -1%;
+      bottom: 2%;
+    }
+    .robot-card.engineer img {
+      width: 92%;
+      max-height: 72%;
+      right: -8%;
+      bottom: 0;
+    }
+
+    /* Shared with Robots.html so the fleet cards render identically. */
+    .fleet-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 22px;
+      margin-top: 60px;
+    }
+    .fleet-card {
+      position: relative;
+      grid-column: span 6;
+      min-height: 570px;
+      overflow: hidden;
+      border-radius: var(--radius);
+      color: #fff;
+      background: #15191f;
+      box-shadow: 0 14px 45px rgba(0,0,0,.14);
+    }
+    .fleet-card.compact {
+      grid-column: span 4;
+      min-height: 520px;
+    }
+    .fleet-card::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      opacity: .18;
+      background-image: radial-gradient(circle,rgba(255,255,255,.55) 1px,transparent 1px);
+      background-size: 25px 25px;
+    }
+    .fleet-copy {
+      position: relative;
+      z-index: 2;
+      min-height: 220px;
+      padding: 32px;
+      background: linear-gradient(180deg,rgba(19,23,28,1),rgba(19,23,28,.93) 70%,transparent);
+    }
+    .fleet-copy span {
+      color: var(--red-light);
+      font-size: .72rem;
+      font-weight: 850;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .fleet-copy h3 {
+      margin: 7px 0 10px;
+      font-size: clamp(1.8rem,3vw,2.8rem);
+      letter-spacing: -.045em;
+      line-height: 1;
+    }
+    .fleet-copy p {
+      max-width: 48ch;
+      margin: 0;
+      color: rgba(255,255,255,.78);
+      font-size: .92rem;
+    }
+    .fleet-card img {
+      position: absolute;
+      width: 82%;
+      max-height: 68%;
+      right: 2%;
+      bottom: 0;
+      object-fit: contain;
+      transition: transform .4s ease;
+    }
+    .fleet-card:hover img { transform: translateY(-7px) scale(1.025); }
+    .fleet-card.fleet-card--hero img { right: -7%; }
+    .fleet-card.sentry img { right: -10%; }
+    .fleet-card.standard img {
+      width: 82%;
+      max-height: 72%;
+      right: 1%;
+      bottom: 1%;
+    }
+    .fleet-card.omni img { width: 82%; right: -1%; bottom: 2%; }
+    .fleet-card.engineer img { width: 88%; right: -5%; }
+
+    .timeline-section { padding: 125px 0; color: var(--white); background: var(--ink-soft); }
+    .timeline-section .eyebrow { color: var(--gold); }
+    .timeline {
+      position: relative;
+      display: grid;
+      margin-top: 70px;
+      grid-template-columns: repeat(4, 1fr);
+      column-gap: 18px;
+      row-gap: 56px;
+    }
+    .timeline::before {
+      position: absolute;
+      top: 18px;
+      right: 9%;
+      left: 9%;
+      height: 1px;
+      content: "";
+      background: linear-gradient(90deg, var(--red), var(--gold));
+      display: none;
+    }
+    .milestone {
+      position: relative;
+      min-width: 0;
+      padding-top: 55px;
+    }
+    .milestone::after {
+      position: absolute;
+      z-index: 0;
+      top: 18px;
+      right: -18px;
+      left: 13px;
+      height: 1px;
+      content: "";
+      background: linear-gradient(90deg, var(--red-light), var(--gold));
+    }
+    .milestone:nth-child(4n)::after { display: none; }
+    .milestone::before {
+      position: absolute;
+      z-index: 1;
+      top: 11px;
+      left: 0;
+      width: 13px;
+      height: 13px;
+      border: 6px solid var(--ink-soft);
+      border-radius: 50%;
+      outline: 2px solid var(--red-light);
+      background: var(--red-light);
+      content: "";
+    }
+    .milestone:nth-child(even)::before { outline-color: var(--gold); background: var(--gold); }
+    .milestone time { color: var(--red-light); font-size: .78rem; font-weight: 800; letter-spacing: .13em; }
+    .milestone:nth-child(even) time { color: var(--gold); }
+    .milestone h3 { margin: 12px 0 5px; font-size: 1.08rem; }
+    .milestone p { margin: 0; color: var(--muted); font-size: .86rem; }
+
+    .cta { padding: 120px 0; }
+    .cta-card {
+      position: relative;
+      display: grid;
+      min-height: 490px;
+      align-items: end;
+      overflow: hidden;
+      padding: clamp(32px, 6vw, 74px);
+      border-radius: calc(var(--radius) + 8px);
+      color: var(--white);
+      background: var(--ink);
+      box-shadow: var(--shadow);
+    }
+    .cta-card::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      background:
+        linear-gradient(90deg, rgba(11,13,16,.98), rgba(11,13,16,.5)),
+        url("assets/img/background.jpg") center/cover;
+    }
+    .cta-card::after {
+      position: absolute;
+      top: -180px;
+      right: -140px;
+      width: 480px;
+      height: 480px;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 50%;
+      box-shadow: 0 0 0 70px rgba(255,255,255,.025), 0 0 0 140px rgba(255,255,255,.02);
+      content: "";
+    }
+    .cta-copy { position: relative; z-index: 2; max-width: 700px; }
+    .cta-copy h2 { margin: 0 0 24px; font-size: clamp(2.7rem, 6vw, 5.7rem); line-height: .95; letter-spacing: -.055em; }
+    .cta-copy p { max-width: 560px; margin: 0 0 30px; color: var(--muted); }
+
+    footer { padding: 70px 0 35px; color: var(--white); background: var(--ink); }
+    .footer-top {
+      display: grid;
+      padding-bottom: 55px;
+      grid-template-columns: 1.2fr .8fr .8fr;
+      gap: 45px;
+      border-bottom: 1px solid var(--line);
+    }
+    .footer-top .brand { margin-bottom: 18px; }
+    .footer-note { max-width: 380px; margin: 0; color: var(--muted); font-size: .9rem; }
+    .footer-group strong { display: block; margin-bottom: 16px; font-size: .78rem; text-transform: uppercase; letter-spacing: .13em; }
+    .footer-group a { display: block; width: fit-content; margin: 9px 0; color: var(--muted); font-size: .9rem; }
+    .footer-group a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex;
+      padding-top: 28px;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      .menu-button { display: flex; }
+      .nav-links {
+        position: fixed;
+        inset: 78px 0 auto;
+        display: grid;
+        padding: 26px 20px 34px;
+        border-top: 1px solid var(--line);
+        background: rgba(11,13,16,.98);
+        transform: translateY(-130%);
+        transition: transform .25s ease;
+      }
+      .nav-links.open { transform: translateY(0); }
+      .nav-links > a:not(.button) { padding: 8px 0; font-size: 1.05rem; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-meta { display: none; }
+      .intro-layout { grid-template-columns: 1fr; }
+      .intro-mark { position: relative; top: auto; min-height: 360px; }
+      .discipline-grid { grid-template-columns: repeat(2, 1fr); }
+      .robot-card.large,
+      .robot-card.compact { grid-column: span 6; }
+      .fleet-card,
+      .fleet-card.compact { grid-column: span 12; }
+      .timeline { grid-template-columns: 1fr; row-gap: 18px; }
+      .timeline::before { top: 0; right: auto; bottom: 0; left: 6px; display: block; width: 1px; height: auto; }
+      .milestone::after { display: none; }
+      .milestone { padding: 0 0 26px 42px; }
+      .milestone::before { top: 5px; left: 0; }
+    }
+
+    @media (max-width: 640px) {
+      .container { width: min(calc(100% - 28px), var(--max)); }
+      .brand span { display: none; }
+      .hero { min-height: 720px; }
+      .hero-grid { padding-top: 120px; }
+      .hero::after { background: linear-gradient(0deg, var(--ink) 0%, rgba(6,8,11,.55) 65%, rgba(6,8,11,.65)); }
+      .hero-actions .button { width: 100%; }
+      .intro, .robots, .cta { padding: 88px 0; }
+      .disciplines, .timeline-section { padding: 90px 0; }
+      .intro-facts { grid-template-columns: 1fr; gap: 22px; }
+      .disciplines .section-head, .robots-head { display: block; }
+      .discipline-grid { grid-template-columns: 1fr; margin-top: 45px; }
+      .discipline { min-height: 270px; }
+      .discipline h3 { margin-top: 80px; }
+      .robot-grid { grid-template-columns: 1fr; }
+      .robot-card.large.has-description,
+      .robot-card.compact.has-description { grid-column: auto; min-height: 520px; }
+      .fleet-card { min-height: 520px; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .footer-top > :first-child { grid-column: 1 / -1; }
+      .footer-bottom { display: block; }
+      .footer-bottom span { display: block; margin: 7px 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
 </head>
-
 <body>
+  <a class="skip-link" href="#main">Skip to main content</a>
 
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-md fixed-top navbar-transparent" color-on-scroll="500">
-
-        <div class="container container-fluid">
-            <div class="navbar-translate navbar-header">
-                <button class="navbar-toggler navbar-toggler-right navbar-burger" type="button" data-toggle="collapse"
-                    data-target="#myNavbar" data-target="#navbarToggler" aria-controls="navbarTogglerDemo02"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-bar"></span>
-                    <span class="navbar-toggler-bar"></span>
-                    <span class="navbar-toggler-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html"><img src="./assets/img/logo.png" alt="" style="height: 40px">
-                    MAC RoboMaster</a>
-            </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-                <ul class="navbar-nav ml-auto nav">
-                    <li class="nav-item">
-                        <a href="./index.html" class="nav-link"><i></i> About</a>
-                    </li>
-                    <!-- <li class="nav-item">
-                        <a href="#projects" class="nav-link"><i></i> Projects</a>
-                    </li> -->
-                    <li class="nav-item">
-                        <a href="./Team.html" class="nav-link"><i></i> Team</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="./Sponsor.html" class="nav-link"><i></i> Sponsors</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="./Contact.html" class="nav-link"><i></i> Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="./apply.html" class="nav-link"><i></i> Join Us</a>
-                    </li>              
-                    <li class="nav-item">
-                        <a class="nav-link" rel="tooltip" title="Like us on Facebook" data-placement="bottom"
-                            href="https://facebook.com/MACRoboMaster" target="_blank">
-                            <i class="fab fa-facebook-square"></i>
-                            <p class="d-lg-none">Facebook</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" rel="tooltip" title="Follow us on Instagram" data-placement="bottom"
-                            href="https://instagram.com/macrobomaster" target="_blank">
-                            <i class="fab fa-instagram"></i>
-                            <p class="d-lg-none">Instagram</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" rel="tooltip" title="Follow us on Youtube" data-placement="bottom"
-                            href="https://www.youtube.com/channel/UCUXVhB4hOqwW6mYe6Jd7yig" target="_blank">
-                            <i class="fab fa-youtube"></i>
-                            <p class="d-lg-none">Youtube</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" rel="tooltip" title="Follow us on LinkedIn" data-placement="bottom"
-                            href="https://www.linkedin.com/company/mac-robomaster" target="_blank">
-                            <i class="fab fa-linkedin"></i>
-                            <p class="d-lg-none">LinkedIn</p>
-                        </a>
-                    </li>
-					<li class="nav-item">
-                        <a class="nav-link" rel="tooltip" title="Follow us on Bilibili" data-placement="bottom"
-                            href="https://space.bilibili.com/1799310293" target="_blank">
-                            <i class="fa-brands fa-bilibili"></i>
-                            <p class="d-lg-none">Bilibili</p>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="./Sponsor.html" class="btn btn-danger btn-round"><i></i>Donate Us</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+  <header class="site-header" id="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="brand" href="index.html" aria-label="MAC RoboMaster homepage">
+        <img src="assets/img/logo.png" alt="">
+        <span>MAC RoboMaster</span>
+      </a>
+      <button class="menu-button" id="menu-button" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open navigation">
+        <span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="#about">About</a>
+        <a href="Robots.html">Robots</a>
+        <a href="Team.html">Team</a>
+        <a href="Sponsor.html">Sponsors</a>
+        <a href="Contact.html">Contact</a>
+        <a class="button" href="apply.html">Join the team <span aria-hidden="true">↗</span></a>
+      </div>
     </nav>
+  </header>
 
-
-
-    <!-- back to top -->
-    <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fas fa-chevron-circle-up"></i></button>
-    <script>
-        // When the user scrolls down 20px from the top of the document, show the button
-        window.onscroll = function () { scrollFunction() };
-
-        function scrollFunction() {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                document.getElementById("myBtn").style.display = "block";
-            } else {
-                document.getElementById("myBtn").style.display = "none";
-            }
-        }
-
-        // When the user clicks on the button, scroll to the top of the document
-        function topFunction() {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        }
-    </script>
-
-    <!-- Page -->
-    <div class="wrapper">
-        <!-- Header -->
-        <div class="" data-parallax="true" style="background-color: black">
-
-            <style>
-                body {
-                    background: #333;
-                }
-
-                .video-container {
-                    position: relative;
-                }
-
-                video {
-                    height: 100%;
-                    vertical-align: middle;
-                    width: 100%;
-                    filter: brightness(50%);
-                }
-
-                .overlay-desc {
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    bottom: 0;
-                    left: 0;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
-
-                h1 {
-                    color: white;
-                    font-size: 5vmax;
-                    text-align: center;
-                }
-
-                main {
-                    margin: 0 auto;
-                    width: 80%;
-                }
-            </style>
-            <!-- Video Cover -->
-            <div class="video-container">
-                <video autoplay muted loop id="myVideo">
-                    <source src="./assets/img/videos/trim.mp4" type="video/mp4">
-                </video>
-                <div class="overlay-desc animatable fadeInUp">
-                    <h1>BUILD THE FUTURE OF ARTIFICIAL INTELLIGENCE AND ROBOTICS</h1>
-                </div>
-            </div>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <video autoplay muted loop playsinline poster="assets/img/background.jpg" aria-hidden="true">
+        <source src="assets/img/videos/trim_26.mp4" type="video/mp4">
+      </video>
+      <div class="hero-grid container">
+        <div>
+          <p class="eyebrow">McMaster University · Hamilton, Canada</p>
+          <h1 class="display" id="hero-title">We build robots that compete at the highest level.</h1>
+          <p class="hero-copy">A student-led team bringing mechanical design, electrical systems, embedded control, and artificial intelligence together for the RoboMaster arena.</p>
+          <div class="hero-actions">
+            <a class="button" href="#robots">Explore our robots <span aria-hidden="true">↓</span></a>
+            <a class="button button--ghost" href="apply.html">Build with us</a>
+          </div>
         </div>
-        <!-- Main -->
-        <div class="main">
-            <!-- About RoboMaster -->
-            <div id="robomaster" class="section text-center container-fluid">
-                <div class="container">
-                    <div class="row animatable fadeInUp">
-                        <div class="col-md-8 ml-auto mr-auto">
-                            <br>
-                            <br>
-                            <img src="assets/img/robomaster.png" style="width: inherit">
-                            <br>
-                            <br>
-                            <br>
-                            <h5 id="test" class="description animated">
-                                RoboMaster Robotics Competition focuses on the
-                                comprehensive application and engineering practice ability of the participating members
-                                in science and engineering disciplines, fully integrating many robotics-related technical
-                                disciplines such as "machine vision," "embedded systems design," "mechanical and electrical assembly,"
-                                "inertial navigation," "human-computer interaction," and so on. The innovative combination of E-sports 
-                                presentation with live competition makes the stakes both fun and intense, drawing in technology enthusiasts 
-                                and the general public alike.
-                                The competition is for university students and runs annually from the start of the school year to the end of summer.
-                            </h5>
-                            <br>
-                            <a href="https://www.robomaster.com/en-US" class="btn btn-danger btn-round">See Details</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- About Us -->
-            <div id="about" class="section text-center container-fluid">
-                <div class="container">
-                    <div class="row animatable fadeInUp">
-                        <div class="col-md-8 ml-auto mr-auto">
-                            <h1 class="title">About Us</h1>
-                            <h5 id="test" class="description animated">
-                                MAC RoboMaster is a team of highly motivated and
-                                passionate students from McMaster University located in Ontario, Canada. Our team name is the Mac Falcons. We
-                                participate in the yearly RoboMaster Robotics Competition where we compete against
-                                universities all over the world. Each season, the team is tasked with developing a
-                                group of remote-control and autonomous battle robots from the ground up. This multidisciplinary
-                                project is no small task, but we love what we do and are committed to learning and
-                                developing as future professionals. We come from many faculties within engineering as
-                                well as business, and we strive for excellence every day.
-                            </h5>
-                            <br>
-                            <!-- <a href="#paper-kit" class="btn btn-danger btn-round">See Details</a> -->
-                        </div>
-                    </div>
-                    <br /><br />
-                    <div class="row animatable fadeInUp">
-                        <div class="col-md-3">
-                            <div class="info">
-                                <div class="icon icon-danger">
-                                    <i class="fas fa-low-vision"></i>
-                                </div>
-                                <div class="description">
-                                    <h4 class="info-title">Computer Vision</h4>
-                                    <p class="description">
-                                        The "eyes and brain" of our robots, utilizing object detection and decision-making
-                                        powered by AI for better robot behaviour.
-                                    </p>
-                                    <!-- <a href="#pkp" class="btn btn-link btn-danger">See more</a> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="info">
-                                <div class="icon icon-danger">
-                                    <i class="fas fa-drafting-compass"></i>
-                                </div>
-                                <div class="description">
-                                    <h4 class="info-title">Mechanical Design</h4>
-                                    <p>The "skeleton" of our robots, implementing frame design to improve their strength and stability.</p>
-                                    <!-- <a href="#pkp" class="btn btn-link btn-danger">See more</a> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="info">
-                                <div class="icon icon-danger">
-                                    <i class="fas fa-microchip"></i>
-                                </div>
-                                <div class="description">
-                                    <h4 class="info-title">Embedded Systems</h4>
-                                    <p>The "nervous system" of our robots, optimizing the control logic and communication between components for better robot performance.</p>
-                                    <!-- <a href="#pkp" class="btn btn-link btn-danger">See more</a> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="info">
-                                <div class="icon icon-danger">
-                                    <i class="fas fa-robot"></i>
-                                </div>
-                                <div class="description">
-                                    <h4 class="info-title">Electrical Design</h4>
-                                    <p>The "heart and blood vessels" of our robots, ensuring reliable power distribution and efficient energy management.</p>
-                                    <!-- <a href="#pkp" class="btn btn-link btn-danger">See more</a> -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Projects -->
-            <div id="projects" class="section text-center container-fluid" id="carousel"
-                 style="background-color: #292E39">
-                <div class="container">
-                    <h1 class="title animatable fadeInUp" style="color:white">Projects</h1>
-                    <div class="row animatable fadeInUp">
-                        <div class="col-md-8 ml-auto mr-auto">
-                            <!-- need revise -->
-                            <div class="card page-carousel" style="background-color: #292E39">
-                                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                                    <ol class="carousel-indicators">
-                                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">
-                                        </li>
-                                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                                        
-                                    </ol>
-                                    <div class="carousel-inner" role="listbox">
-                                        <div class="carousel-item active">
-                                            <img class="d-block img-fluid" src="assets/img/projects/4leg_standard.SVG"
-                                                 style="margin-left: auto; margin-right: auto;" alt="First slide">
-                                            <div class="carousel-caption d-none d-md-block">
-                                                <!-- <p>Somewhere</p> -->
-                                            </div>
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img class="d-block img-fluid" src="assets/img/projects/mecanum_standard.svg"
-                                                 style="margin-left: auto; margin-right: auto;" alt="Second slide">
-                                            <div class="carousel-caption d-none d-md-block">
-                                            </div>
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img class="d-block img-fluid" src="assets/img/projects/sentry.SVG"
-                                                 style="margin-left: auto; margin-right: auto;" alt="Third slide">
-                                            <div class="carousel-caption d-none d-md-block">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <a class="left carousel-control carousel-control-prev"
-                                       href="#carouselExampleIndicators" role="button" data-slide="prev">
-                                        <span class="fa fa-angle-left"></span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                    <a class="right carousel-control carousel-control-next"
-                                       href="#carouselExampleIndicators" role="button" data-slide="next">
-                                        <span class="fa fa-angle-right"></span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-
-
-
-
-                    <!-- Competition Schedule — single self-contained div, all styles inline -->
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Exo+2:wght@400;600&display=swap" rel="stylesheet">
-
-<div style="background:linear-gradient(150deg,#131f2e 0%,#0d1821 100%);border-radius:18px;padding:48px 56px 56px;width:100%;max-width:1080px;margin:0 auto;box-shadow:0 24px 72px rgba(0,0,0,0.65);font-family:'Exo 2',sans-serif;position:relative;overflow:hidden;">
-
-  <!-- Title -->
-  <div style="text-align:center;margin-bottom:52px;">
-    <h1 style="font-family:'Arial',sans-serif;font-size:2.2rem;font-weight:700;color:#fff;letter-spacing:3px;text-transform:uppercase;margin:0;">2025-2026 Season Schedule</h1>
-    <div style="display:flex;align-items:center;justify-content:center;margin-top:10px;gap:10px;">
-      <span style="width:90px;height:1px;background:linear-gradient(90deg,transparent,rgba(33,150,243,0.7));display:block;"></span>
-      <span style="width:7px;height:7px;background:#29b6f6;transform:rotate(45deg);display:block;box-shadow:0 0 8px #29b6f6;"></span>
-      <span style="width:90px;height:1px;background:linear-gradient(90deg,rgba(33,150,243,0.7),transparent);display:block;"></span>
-    </div>
-  </div>
-
-  <!-- Grid wrapper -->
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;grid-template-rows:auto 28px 56px 28px auto;">
-
-    <!-- Top card: col 1 -->
-    <div style="grid-column:1;grid-row:1;border-radius:12px;border:2px solid #2196f3;background:#111e2d;padding:16px 14px;text-align:center;">
-      <div style="font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:1px;color:#29b6f6;margin-bottom:5px;">RMUC & RMUL</div>
-      <div style="font-size:0.8rem;color:#7a90a4;">Registration Start</div>
-    </div>
-
-    <!-- Top card: col 3 -->
-    <div style="grid-column:3;grid-row:1;border-radius:12px;border:2px solid #2196f3;background:#111e2d;padding:16px 14px;text-align:center;">
-      <div style="font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:1px;color:#29b6f6;margin-bottom:5px;">RMUC</div>
-      <div style="font-size:0.8rem;color:#7a90a4;">Final Robot Assessment</div>
-    </div>
-
-    <!-- Top card: col 5 -->
-    <div style="grid-column:5;grid-row:1;border-radius:12px;border:2px solid #2196f3;background:#111e2d;padding:16px 14px;text-align:center;">
-      <div style="font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:1px;color:#29b6f6;margin-bottom:5px;">RMUC</div>
-      <div style="font-size:0.8rem;color:#7a90a4;">Final Competition in Shenzhen, China</div>
-    </div>
-
-    <!-- Top vertical line: col 1 -->
-    <div style="grid-column:1;grid-row:2;display:flex;justify-content:center;">
-      <div style="width:2px;background:#2196f3;flex:1;"></div>
-    </div>
-
-    <!-- Top vertical line: col 3 -->
-    <div style="grid-column:3;grid-row:2;display:flex;justify-content:center;">
-      <div style="width:2px;background:#2196f3;flex:1;"></div>
-    </div>
-
-    <!-- Top vertical line: col 5 -->
-    <div style="grid-column:5;grid-row:2;display:flex;justify-content:center;">
-      <div style="width:2px;background:#2196f3;flex:1;"></div>
-    </div>
-
-    <!-- Nodes row (spans all 5 cols) -->
-    <div style="grid-column:1/-1;grid-row:3;display:flex;align-items:center;justify-content:space-between;">
-
-      <!-- Node 1: (blue) -->
-      <div style="display:flex;justify-content:center;flex:1;">
-        <div style="font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;color:#fff;letter-spacing:1.5px;padding:13px 0;width:108px;text-align:center;border-radius:6px;clip-path:polygon(10px 0%,calc(100% - 10px) 0%,100% 50%,calc(100% - 10px) 100%,10px 100%,0% 50%);background:linear-gradient(135deg,#1976d2,#0d47a1);box-shadow:0 0 18px rgba(33,150,243,0.35);">2025.10</div>
-      </div>
-
-      <!-- Arrow -->
-      <div style="display:flex;align-items:center;gap:4px;flex:0 0 auto;padding:0 4px;">
-        <span style="display:block;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:10px solid #455a6a;"></span>
-        <span style="display:block;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:10px solid #455a6a;"></span>
-        <span style="display:block;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:10px solid #455a6a;"></span>
-      </div>
-
-      <!-- Node 2: (gold) -->
-      <div style="display:flex;justify-content:center;flex:1;">
-        <div style="font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;color:#fff;letter-spacing:1.5px;padding:13px 0;width:108px;text-align:center;border-radius:6px;clip-path:polygon(10px 0%,calc(100% - 10px) 0%,100% 50%,calc(100% - 10px) 100%,10px 100%,0% 50%);background:linear-gradient(135deg,#f5a623,#c97c00);box-shadow:0 0 18px rgba(245,166,35,0.35);">2026.01</div>
-      </div>
-
-      <!-- Arrow -->
-      <div style="display:flex;align-items:center;gap:4px;flex:0 0 auto;padding:0 4px;">
-        <span style="display:block;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:10px solid #455a6a;"></span>
-        <span style="display:block;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:10px solid #455a6a;"></span>
-        <span style="display:block;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:10px solid #455a6a;"></span>
-      </div>
-
-      <!-- Node 3: (blue) -->
-      <div style="display:flex;justify-content:center;flex:1;">
-        <div style="font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;color:#fff;letter-spacing:1.5px;padding:13px 0;width:108px;text-align:center;border-radius:6px;clip-path:polygon(10px 0%,calc(100% - 10px) 0%,100% 50%,calc(100% - 10px) 100%,10px 100%,0% 50%);background:linear-gradient(135deg,#1976d2,#0d47a1);box-shadow:0 0 18px rgba(33,150,243,0.35);">2026.04</div>
-      </div>
-
-      <!-- Arrow -->
-      <div style="display:flex;align-items:center;gap:4px;flex:0 0 auto;padding:0 4px;">
-        <span style="display:block;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:10px solid #455a6a;"></span>
-        <span style="display:block;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:10px solid #455a6a;"></span>
-        <span style="display:block;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:10px solid #455a6a;"></span>
-      </div>
-
-      <!-- Node 4: (gold) -->
-      <div style="display:flex;justify-content:center;flex:1;">
-        <div style="font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;color:#fff;letter-spacing:1.5px;padding:13px 0;width:108px;text-align:center;border-radius:6px;clip-path:polygon(10px 0%,calc(100% - 10px) 0%,100% 50%,calc(100% - 10px) 100%,10px 100%,0% 50%);background:linear-gradient(135deg,#f5a623,#c97c00);box-shadow:0 0 18px rgba(245,166,35,0.35);">2026.04</div>
-      </div>
-
-      <!-- Arrow -->
-      <div style="display:flex;align-items:center;gap:4px;flex:0 0 auto;padding:0 4px;">
-        <span style="display:block;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:10px solid #455a6a;"></span>
-        <span style="display:block;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:10px solid #455a6a;"></span>
-        <span style="display:block;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:10px solid #455a6a;"></span>
-      </div>
-
-      <!-- Node 5: (blue) -->
-      <div style="display:flex;justify-content:center;flex:1;">
-        <div style="font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;color:#fff;letter-spacing:1.5px;padding:13px 0;width:108px;text-align:center;border-radius:6px;clip-path:polygon(10px 0%,calc(100% - 10px) 0%,100% 50%,calc(100% - 10px) 100%,10px 100%,0% 50%);background:linear-gradient(135deg,#1976d2,#0d47a1);box-shadow:0 0 18px rgba(33,150,243,0.35);">2026.08</div>
-      </div>
-
-    </div>
-
-    <!-- Bottom vertical line: col 2 -->
-    <div style="grid-column:2;grid-row:4;display:flex;justify-content:center;">
-      <div style="width:2px;background:#f5a623;flex:1;"></div>
-    </div>
-
-    <!-- Bottom vertical line: col 4 -->
-    <div style="grid-column:4;grid-row:4;display:flex;justify-content:center;">
-      <div style="width:2px;background:#f5a623;flex:1;"></div>
-    </div>
-
-    <!-- Bottom card: col 2 -->
-    <div style="grid-column:2;grid-row:5;border-radius:12px;border:2px solid #f5a623;background:#111e2d;padding:16px 14px;text-align:center;">
-      <div style="font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:1px;color:#f5a623;margin-bottom:5px;">RMUL</div>
-      <div style="font-size:0.8rem;color:#7a90a4;">Final Robot Assessment</div>
-    </div>
-
-    <!-- Bottom card: col 4 -->
-    <div style="grid-column:4;grid-row:5;border-radius:12px;border:2px solid #f5a623;background:#111e2d;padding:16px 14px;text-align:center;">
-      <div style="font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:1px;color:#f5a623;margin-bottom:5px;">RMUL</div>
-      <div style="font-size:0.8rem;color:#7a90a4;">Final Competition in China</div>
-    </div>
-
-  </div><!-- end grid -->
-
-</div><!-- end card -->
-                </div>
-            </div>
-
-
-            <!-- Sponsors -->
-            <!--<div id="sponsors" class="section text-center container-fluid">
-                <div class="container">
-                    <h1 class="title animatable fadeInUp">Sponsors & Partners</h1>
-                    <br />
-                    <br />
-                    <br />
-
-
-                    <div class="row">
-                        <div class="col-sm-3 animatable fadeInUp">
-                            <img src="./assets/img/sponsors/maceng.png" style="height: 100px">
-                        </div>
-
-                        <div class="col-sm-3 animatable fadeInUp">
-                            <img src="./assets/img/sponsors/dji.jpg" style="height: 120px">
-                        </div>
-
-                        <div class="col-sm-3 animatable fadeInUp">
-                            <img src="./assets/img/sponsors/nvidia.png" style="height: 120px">
-                        </div>
-
-                        <div class="col-sm-3 animatable fadeInUp">
-                            <img src="./assets/img/sponsors/mcmaster.png" style="height: 100px">
-                        </div>
-
-                        <div class="col-sm-3 animatable fadeInUp">
-                            <img src="./assets/img/sponsors/mmri.jpg" style="height: 120px">
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-12 ml-auto mr-auto animatable fadeInUp">
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <a href="./assets/files/MacRM_Sponsor_Package.pdf" target="_blank">
-                            <input class="btn btn-danger btn-lg btn-fill" type="button" value="Sponsor Package" />
-                        </a>
-                    </div>
-                </div>
-            </div>-->
-
-            <!-- instagram gallery -->
-            <!--<div id="instagram" class="section section-dark text-center container-fluid"
-                 style="background-image: url('assets/img/inst.jpg')">
-                <div class="container animatable fadeInUp">
-                    <h1 class="title">Our Instagram Gallery</h1>
-                    <br />
-                    <br />
-
-                    <div data-is data-is-access-token="9410218449.6142d53.9254423118334db5a13b23250c44d3ab"
-                         data-is-cache-media-time="2500" data-is-rows="2"></div>
-
-                </div>
-
-            </div>-->
-
-            <!-- Contact Us -->
-            <!--<div id="contact" class="section text-center container-fluid">
-            <div class="container">
-                <h1 class="title animatable fadeInUp">Contact Us</h1>
-                <div class="row">
-
-                    <div class="col-md-6 animatable fadeInUp">
-                        <div id="map-container" class="card card-profile card-plain"
-                             style="height: 300px; width: 100% ">
-                        </div>
-                    </div>
-
-
-                    <script>
-                        // Initialize and add the map
-                        function initMap() {
-                            // The location of Uluru
-                            var uluru = { lat: 43.259121, lng: -79.920842 };
-                            // The map, centered at Uluru
-                            var map = new google.maps.Map(document.getElementById('map-container'), {
-                                zoom: 15,
-                                center: uluru,
-                                styles: [
-                                    { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
-                                    { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
-                                    { elementType: 'labels.text.fill', stylers: [{ color: '#ba4848' }] },
-                                    {
-                                        featureType: 'administrative.locality',
-                                        elementType: 'labels.text.fill',
-                                        stylers: [{ color: '#9b0d0d' }]
-                                    },
-                                    {
-                                        featureType: 'poi',
-                                        elementType: 'labels.text.fill',
-                                        stylers: [{ color: '#ba4848' }]
-                                    },
-                                    {
-                                        featureType: 'poi.park',
-                                        elementType: 'geometry',
-                                        stylers: [{ color: '#263c3f' }]
-                                    },
-                                    {
-                                        featureType: 'poi.park',
-                                        elementType: 'labels.text.fill',
-                                        stylers: [{ color: '#6b9a76' }]
-                                    },
-                                    {
-                                        featureType: 'road',
-                                        elementType: 'geometry',
-                                        stylers: [{ color: '#38414e' }]
-                                    },
-                                    {
-                                        featureType: 'road',
-                                        elementType: 'geometry.stroke',
-                                        stylers: [{ color: '#212a37' }]
-                                    },
-                                    {
-                                        featureType: 'road',
-                                        elementType: 'labels.text.fill',
-                                        stylers: [{ color: '#9ca5b3' }]
-                                    },
-                                    {
-                                        featureType: 'road.highway',
-                                        elementType: 'geometry',
-                                        stylers: [{ color: '#720a0a' }]
-                                    },
-                                    {
-                                        featureType: 'road.highway',
-                                        elementType: 'geometry.stroke',
-                                        stylers: [{ color: '#1f2835' }]
-                                    },
-                                    {
-                                        featureType: 'road.highway',
-                                        elementType: 'labels.text.fill',
-                                        stylers: [{ color: '#ba4848' }]
-                                    },
-                                    {
-                                        featureType: 'transit',
-                                        elementType: 'geometry',
-                                        stylers: [{ color: '#2f3948' }]
-                                    },
-                                    {
-                                        featureType: 'transit.station',
-                                        elementType: 'labels.text.fill',
-                                        stylers: [{ color: '#d59563' }]
-                                    },
-                                    {
-                                        featureType: 'water',
-                                        elementType: 'geometry',
-                                        stylers: [{ color: '#17263c' }]
-                                    },
-                                    {
-                                        featureType: 'water',
-                                        elementType: 'labels.text.fill',
-                                        stylers: [{ color: '#515c6d' }]
-                                    },
-                                    {
-                                        featureType: 'water',
-                                        elementType: 'labels.text.stroke',
-                                        stylers: [{ color: '#17263c' }]
-                                    }
-                                ]
-                            });
-                            // The marker, positioned at Uluru
-                            var marker = new google.maps.Marker({ position: uluru, map: map, title: "MAC RoboMaster" });
-                        }
-                    </script>
-                    <div class="col-md-6 animatable fadeInUp">
-                        <div class="card card-profile card-plain" style="height: 100%; width: 100% ">
-                            <div class="card-body">
-                                <p class="card-description" style="text-align: left">
-                                    If you have any questions or would like to become a sponsor, please do not
-                                    hesitate to contact us at
-                                    <br />
-                                    <a href="mailto:macrobomaster@gmail.com" style="color:brown">
-                                        macrobomaster@gmail.com
-                                    </a>
-                                    <br />
-                                    <br />
-                                </p>
-
-                                <div class="author" style="text-align: left">
-                                    <h4 class="card-title">McMaster University</h4>
-                                </div>
-
-                                <p class="card-description" style="text-align: left">
-                                    Information Technology Building
-                                    <br />
-                                    1280 Main St W
-                                    <br />
-                                    Hamilton, ON
-                                    <br />
-                                    L8P 0B8
-                                    <br />
-                                    <br />
-                                    <br />
-
-                                </p>
-                                <p class="card-description text-center">
-                                    <button class="btn btn-danger btn-lg btn-fill"
-                                            onclick="location.href='mailto:macrobomaster@gmail.com'"
-                                            type="button">
-                                        Contact Us
-                                    </button>
-                                </p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <br />
-
-
-            </div>
+        <div class="hero-meta" aria-label="Team overview">
+          <div><strong>4</strong><span>Core disciplines</span></div>
+          <div><strong>1</strong><span>Shared mission</span></div>
+          <div><strong>Global</strong><span>Competition</span></div>
         </div>
+      </div>
+    </section>
 
-
-
-    </div>-->
-            <!-- Donate Us -->
-            <!--<div id="donate" class="section text-center container-fluid">
-        <div class="container animatable fadeInUp">
-            <h1 class="title">Why Sponsors Us</h1>
-            <div class="row animatable fadeInUp">
-                <div class="col-md-12 ml-auto mr-auto">
-                    <h5 id="test" class="description animated">
-                        As an innovative engineering group which is specializing in designing, reframing and aiming
-                        to provide an unique experience of combining in-class theoriotical knowledge and practical
-                        field application in order to generate an opportunity for McMaster University students to
-                        explore their true talent and potential. With the great goal like this, we are in urgently
-                        demand of key stakeholders who are sharing the same vision and willing to participating in
-                        the process of assisting us achiving this goal!
-                    </h5>
-                </div>
-
-                <div class="col-md-12 ml-auto mr-auto">
-                    <img src="./assets/img/logo_master.png" alt="" style="width:50%">
-                </div>
-
-                <div class="col-md-12 ml-auto mr-auto">
-                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                        <input type="hidden" name="cmd" value="_s-xclick" />
-                        <input type="hidden" name="hosted_button_id" value="TMVJUH3SEQBGL" />
-                        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
-                            border="0" name="submit" alt="Donate with PayPal button" />
-                        <img alt="" border="0" src="https://www.paypal.com/en_CA/i/scr/pixel.gif" width="1"
-                            height="1" />
-                    </form>
-                    <br />
-                    <br />
-
-                </div>
-
-                <div class="col-md-12 ml-auto mr-auto">
-                    <img src="./assets/img/donate_qr.png" alt="" style="width:30%">
-                    <p>Or scan the above QR Code!</p>
-                    <br />
-                    <br />
-                </div>
-                <div class="col-md-12 ml-auto mr-auto">
-                    <a href="./assets/files/MacRM_Sponsor_Package.pdf" target="_blank">
-                        <input class="btn btn-danger btn-lg btn-fill" type="button" value="Sponsor Package" />
-                    </a>
-                </div>
-
-
-            </div>
+    <section class="intro" id="about">
+      <div class="intro-layout container">
+        <div class="intro-mark reveal">
+          <span class="intro-mark-label">Mac Falcons · Est. at McMaster</span>
+          <img src="assets/img/logo_master.png" alt="MAC RoboMaster falcon emblem">
         </div>
+        <div class="intro-copy reveal">
+          <p class="eyebrow">Who we are</p>
+          <h2 class="section-title">Engineering is a team sport.</h2>
+          <p class="lede">MAC RoboMaster is a multidisciplinary student team at McMaster University. Every season, we design and build a fleet of remote-controlled and autonomous battle robots from the ground up—then take them to compete with universities from around the world.</p>
+          <p class="lede">We are engineers, programmers, designers, operators, and organizers united by a love of ambitious problems and hands-on learning.</p>
+          <div class="intro-facts">
+            <div><strong>Full-stack</strong><span>Robotics development</span></div>
+            <div><strong>Student-led</strong><span>Design and operations</span></div>
+            <div><strong>Annual</strong><span>Build season</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="disciplines" aria-labelledby="disciplines-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">One robot, many systems</p>
+            <h2 class="section-title" id="disciplines-title">Built across disciplines.</h2>
+          </div>
+          <p class="lede">Real competition robots demand a tight loop between hardware, software, and strategy.</p>
+        </div>
+        <div class="discipline-grid reveal">
+          <article class="discipline">
+            <span class="number">01 / VISION</span>
+            <h3>Computer Vision</h3>
+            <p>The eyes and brain: object detection, target tracking, and intelligent decision-making.</p>
+          </article>
+          <article class="discipline">
+            <span class="number">02 / MECHANICAL</span>
+            <h3>Mechanical Design</h3>
+            <p>The skeleton: strong, serviceable mechanisms built for speed, accuracy, and impact.</p>
+          </article>
+          <article class="discipline">
+            <span class="number">03 / EMBEDDED</span>
+            <h3>Embedded Systems</h3>
+            <p>The nervous system: real-time controls and reliable communication between components.</p>
+          </article>
+          <article class="discipline">
+            <span class="number">04 / ELECTRICAL</span>
+            <h3>Electrical Design</h3>
+            <p>The heartbeat: robust power distribution, sensing, wiring, and energy management.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="robots" id="robots" aria-labelledby="robots-title">
+      <div class="container">
+        <div class="robots-head reveal">
+          <div>
+            <p class="eyebrow">Meet the fleet</p>
+            <h2 class="section-title" id="robots-title">Purpose-built for the arena.</h2>
+          </div>
+          <a class="text-link" href="https://www.robomaster.com/en-US" target="_blank" rel="noopener">About RoboMaster ↗</a>
+        </div>
+        <div class="fleet-grid">
+          <article class="fleet-card fleet-card--hero reveal"><div class="fleet-copy"><span>Heavy offense</span><h3>Hero</h3><p>The fleet’s heavy offensive platform, built to deliver powerful, deliberate shots while staying mobile in the arena.</p></div><img src="assets/img/projects/26_hero.svg" alt="MAC RoboMaster 2026 Hero robot"></article>
+          <article class="fleet-card sentry reveal"><div class="fleet-copy"><span>Autonomous defense</span><h3>Sentry</h3><p>An autonomous defensive platform that observes the battlefield, identifies targets, and protects key areas of the arena.</p></div><img src="assets/img/projects/26_sentry.svg" alt="MAC RoboMaster 2026 Sentry robot"></article>
+          <article class="fleet-card compact standard reveal"><div class="fleet-copy"><span>Agility</span><h3>Standard 3</h3><p>A versatile frontline robot designed for fast movement, responsive control, and consistent pressure throughout a match.</p></div><img src="assets/img/projects/26_standard.svg" alt="MAC RoboMaster 2026 Standard 3 robot"></article>
+          <article class="fleet-card compact omni reveal"><div class="fleet-copy"><span>Omnidirectional mobility</span><h3>Standard 4 Omni</h3><p>An omnidirectional Standard platform developed for precise movement, rapid repositioning, and adaptable frontline play.</p></div><img src="assets/img/projects/standard4_omni.svg" alt="MAC RoboMaster 2026 Standard 4 Omni robot"></article>
+          <article class="fleet-card compact engineer reveal"><div class="fleet-copy"><span>Support & recovery</span><h3>Engineer</h3><p>The Engineer collects ore and exchanges it for currency that allied robots can use to purchase ammunition or revive instantly.</p></div><img src="assets/img/projects/engineer_bot_25.svg" alt="MAC RoboMaster Engineer robot"></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="timeline-section" aria-labelledby="timeline-title">
+      <div class="container">
+        <div class="reveal">
+          <p class="eyebrow">Road to competition</p>
+          <h2 class="section-title" id="timeline-title">2026–2027 season.</h2>
+        </div>
+        <div class="timeline reveal">
+          <article class="milestone"><time datetime="2026-10">Oct 2026</time><h3>Registration opens</h3><p>RMUC and RMUL season registration.</p></article>
+          <article class="milestone"><time datetime="2026-12">Dec 2026</time><h3>RMUC Design review</h3><p>Final design review by RMOC for the 2026–2027 season.</p></article>
+          <article class="milestone"><time datetime="2027-01">Jan 2027</time><h3>RMUC Mid-term assessment</h3><p>Mid-term robot assessment for the university championship.</p></article>
+          <article class="milestone"><time datetime="2027-03">Mar 2027</time><h3>RMUC Final assessment</h3><p>Final robot assessment for the university championship.</p></article>
+          <article class="milestone"><time datetime="2027-04">Apr 2027</time><h3>ARC Robotics competition (RMUL) assessment</h3><p>Final robot assessment for the university league.</p></article>
+          <article class="milestone"><time datetime="2027-05">May 2027</time><h3>RMUC competition</h3><p>University championship regional competition in China.</p></article>
+          <article class="milestone"><time datetime="2027-06">Jun 2027</time><h3>ARC Robotics competition (RMUL)</h3><p>University league regional competition in the United States.</p></article>
+          <article class="milestone"><time datetime="2027-08">Aug 2027</time><h3>RMUC finals</h3><p>Final competition in Shenzhen, China.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <div class="cta-card reveal">
+          <div class="cta-copy">
+            <p class="eyebrow">Your next build starts here</p>
+            <h2>Make something that moves.</h2>
+            <p>Whether you work in engineering, software, business, media, or design, there is a place to make an impact on MAC RoboMaster.</p>
+            <a class="button" href="apply.html">Join MAC RoboMaster <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <a class="brand" href="index.html"><img src="assets/img/logo.png" alt=""><span>MAC RoboMaster</span></a>
+          <p class="footer-note">McMaster University's RoboMaster team. Designed, built, and driven by students in Hamilton, Ontario.</p>
+        </div>
+        <div class="footer-group">
+          <strong>Explore</strong>
+          <a href="Team.html">Our team</a>
+          <a href="Sponsor.html">Sponsors</a>
+          <a href="Contact.html">Contact us</a>
+          <a href="apply.html">Join the team</a>
+        </div>
+        <div class="footer-group">
+          <strong>Follow</strong>
+          <a href="https://instagram.com/macrobomaster" target="_blank" rel="noopener">Instagram ↗</a>
+          <a href="https://www.youtube.com/channel/UCUXVhB4hOqwW6mYe6Jd7yig" target="_blank" rel="noopener">YouTube ↗</a>
+          <a href="https://www.linkedin.com/company/mac-robomaster" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://facebook.com/MACRoboMaster" target="_blank" rel="noopener">Facebook ↗</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year">2026</span> MAC RoboMaster</span>
+        <span>McMaster University · Hamilton, Ontario</span>
+      </div>
     </div>
-    -->
-            <!-- Join Us -->
-            <!-- <div id="join" class="section section-dark text-center container-fluid"
-    style="background-image: url('assets/img/background.jpg')">
+  </footer>
 
-    <div class="container animatable fadeInUp">
-        <div class="row">
-            <div class="col-md-8 ml-auto mr-auto">
-                <h1 class="title">Join Our Team</h1>
-                <h5 id="test" class="description animated">We take pride in the development of everyone on the
-                    team. The experience and skills that people develop in all areas is better than anything
-                    that could be achieved at a similar age in the workplace. Our team is a challenge in
-                    engineering, business, and project management; we are always looking for new members to
-                    expand our team in a diverse range of faculties from engineering to business. Come to our
-                    recruitment sessions or just reach out if you are interested in what we do.
-                </h5>
-                <h1 class="title">Become our operators</h1>
-                <h5 id="test" class="description animated">Interested in FPS games and RC racing? Do you fly
-                    drones and FPV? Are you an experienced Marauder on the esports battlefield? Here's your
-                    chance! We are recruiting robot operators to represent our team to attend the RoboMaster
-                    final competition in Shenzhen, China in mid-July (especially if you are good at FPS games).
-                    Part of the travel expense will be reimbursed!
-                </h5>
+  <script>
+    const header = document.querySelector("#site-header");
+    const menuButton = document.querySelector("#menu-button");
+    const navLinks = document.querySelector("#nav-links");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-                <h4 id="test" class="description animated" style="color: white">
-                    If you are interested in this amazing oppotunity, feel free to come!
-                </h4>
-                <br> -->
-            <!-- <a href="#paper-kit" class="btn btn-danger btn-round">See Details</a> -->
-            <!-- </div>
-                <div class="col-md-12 ml-auto mr-auto">
-                    <button class="btn btn-danger btn-lg btn-fill"
-                        onclick="location.href='https://forms.gle/JUEgjrhdYf6NjDda6'" type="button">Apply
-                        Now</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-            <!-- Footer -->
-            <footer class="footer">
-                <div class="container">
-                    <div class="row">
-                        <nav class="footer-nav">
-                            <ul>
-                                <li>
-                                    <a class="nav-link" href="https://instagram.com/macrobomaster" target="_blank">
-                                        <i class="fab fa-instagram"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="https://facebook.com/MACRoboMaster" target="_blank">
-                                        <i class="fab fa-facebook-square"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="https://www.youtube.com/channel/UCUXVhB4hOqwW6mYe6Jd7yig" target="_blank"><i class="fab fa-youtube"></i></a>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="https://www.linkedin.com/company/mac-robomaster"
-                                       target="_blank"><i class="fab fa-linkedin"></i></a>
-                                </li>
-								<li>
-                                    <a class="nav-link" href="https://space.bilibili.com/1799310293"
-                                       target="_blank"><i class="fa-brands fa-bilibili"></i></a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="credits ml-auto">
-                            <span class="copyright">
-                                &copy; 2026 MAC RoboMaster. All rights reserved.
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+    function updateHeader() {
+      header.classList.toggle("scrolled", window.scrollY > 24);
+    }
 
-            <!-- smooth scroll -->
-            <script>
-                $(document).ready(function () {
-                    // Add scrollspy to <body>
-                    $('body').scrollspy({ target: ".navbar", offset: 50 });
+    menuButton.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      document.body.classList.toggle("menu-open", isOpen);
+      menuButton.setAttribute("aria-expanded", String(isOpen));
+      menuButton.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+    });
 
-                    // Add smooth scrolling on all links inside the navbar
-                    $("#myNavbar a").on('click', function (event) {
-                        // Make sure this.hash has a value before overriding default behavior
-                        if (this.hash !== "") {
-                            // Prevent default anchor click behavior
-                            event.preventDefault();
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        document.body.classList.remove("menu-open");
+        menuButton.setAttribute("aria-expanded", "false");
+      });
+    });
 
-                            // Store hash
-                            var hash = this.hash;
+    updateHeader();
+    window.addEventListener("scroll", updateHeader, { passive: true });
+    document.querySelector("#year").textContent = new Date().getFullYear();
 
-                            // Using jQuery's animate() method to add smooth page scroll
-                            // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-                            $('html, body').animate({
-                                scrollTop: $(hash).offset().top
-                            }, 800, function () {
-
-                                // Add hash (#) to URL when done scrolling (default click behavior)
-                                window.location.hash = hash;
-                            });
-                        }  // End if
-                    });
-                });
-            </script>
-
-
+    const revealItems = document.querySelectorAll(".reveal");
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      revealItems.forEach((item) => item.classList.add("visible"));
+    } else {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: .12 });
+      revealItems.forEach((item) => observer.observe(item));
+    }
+  </script>
 </body>
-
-<!-- Core JS Files -->
-<script src="assets/js/jquery-3.2.1.js" type="text/javascript"></script>
-<script src="assets/js/jquery-ui-1.12.1.custom.min.js" type="text/javascript"></script>
-<script src="assets/js/popper.js" type="text/javascript"></script>
-<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBayJJXo_yGLVyvHH6TYOj7yqUvX6ozClQ&callback=initMap" async
-    defer></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
-<!-- Switches -->
-<script src="assets/js/bootstrap-switch.min.js"></script>
-
-<!--  Plugins for Slider -->
-<script src="assets/js/nouislider.js"></script>
-
-<!--  Plugins for DateTimePicker -->
-<script src="assets/js/moment.min.js"></script>
-<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
-
-<!--  Paper Kit Initialization and functons -->
-<script src="assets/js/paper-kit.js?v=2.1.0"></script>
-
-<!-- Plugin for the instgram show -->
-<script src="assets/js/infinitescroll.js"></script>
-<script src="assets/js/jquery.instashow-lite.packaged.js"></script>
-
-<!-- animate -->
-<script src="assets/js/animate.js"></script>
-
-
-
-
 </html>
