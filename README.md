@@ -27,7 +27,8 @@ The current design was updated for the 2026–2027 season and includes:
 | `Team.html` | Current team, advisors, former seasons, co-founders, and alumni |
 | `Sponsor.html` | Sponsors, partnership information, and donations |
 | `Contact.html` | Contact information, location, and social links |
-| `apply.html` | Recruitment overview and team roles |
+| `apply.html` | Archived recruitment overview and team roles |
+| `applications-open.html` | Current applications-open page with a direct link to the Google Form |
 | `sorry.html` | Applications-closed page and recruitment reminder form |
 
 ## Project structure
@@ -112,7 +113,8 @@ Current team members use larger portrait cards. Former seasons, co-founders, and
 
 ### Recruitment
 
-- General recruitment information is maintained in `apply.html`.
+- The current recruitment page is maintained in `applications-open.html`.
+- The previous recruitment overview remains archived in `apply.html`.
 - Application status and the reminder form are maintained in `sorry.html`.
 - Reminder emails are submitted to Google Forms and must not be stored in this repository.
 
