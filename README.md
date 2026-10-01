@@ -28,8 +28,8 @@ The current design was updated for the 2026–2027 season and includes:
 | `Sponsor.html` | Sponsors, partnership information, and donations |
 | `Contact.html` | Contact information, location, and social links |
 | `apply.html` | Archived recruitment overview and team roles |
-| `applications-open.html` | Current applications-open page with a direct link to the Google Form |
-| `sorry.html` | Applications-closed page and recruitment reminder form |
+| `applications-open.html` | Compatibility entry that redirects old links to the current applications-closed page |
+| `sorry.html` | Current applications-closed page, team interest areas, and recruitment reminder form |
 
 ## Project structure
 
@@ -113,9 +113,10 @@ Current team members use larger portrait cards. Former seasons, co-founders, and
 
 ### Recruitment
 
-- The current recruitment page is maintained in `applications-open.html`.
+- Applications are currently closed. The current recruitment page and reminder form are maintained in `sorry.html`.
+- `applications-open.html` is a compatibility entry that redirects old links to `sorry.html`.
 - The previous recruitment overview remains archived in `apply.html`.
-- Application status and the reminder form are maintained in `sorry.html`.
+- Current interest areas use Control & Embedded Team and Autonomy Team; historical team titles remain unchanged.
 - Reminder emails are submitted to Google Forms and must not be stored in this repository.
 
 ### Sponsors
